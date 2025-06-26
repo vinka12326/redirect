@@ -1,58 +1,85 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ouverture WedShoots</title>
+  <style>
+    body { 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      height: 100vh; 
+      font-family: sans-serif; 
+      text-align: center; 
+      padding: 1rem;
+    }
+    .message {
+      max-width: 20rem;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 0.25rem;
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="fr"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Ouverture WedShoots&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>window.onload = function() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// 1. Essayer d'ouvrir l'application</p>
-<p class="p1"><span class="Apple-converted-space">      </span>var deepLink = "wedshoots://album?code=ES408879c9";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// 2. Définir les URLs de secours</p>
-<p class="p1"><span class="Apple-converted-space">      </span>var fallbackIOS <span class="Apple-converted-space">    </span>= "https://apps.apple.com/fr/app/wedshoots/id660256196";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>var fallbackAndroid = "https://play.google.com/store/apps/details?id=net.bodas.android.wedshoots&amp;hl=fr";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// 3. Préparer un timer de secours</p>
-<p class="p1"><span class="Apple-converted-space">      </span>var now = Date.now();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>setTimeout(function() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var ua = navigator.userAgent;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (/Android/i.test(ua)) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>window.location = fallbackAndroid;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (/iPhone|iPad|iPod/i.test(ua)) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>window.location = fallbackIOS;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>// Navigate to iOS store by default on desktop</p>
-<p class="p1"><span class="Apple-converted-space">          </span>window.location = fallbackIOS;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}, 1500);<span class="Apple-converted-space">  </span>// on attend 1,5 s avant de tomber sur le store</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// 4. On tente d'ouvrir l'app immédiatement</p>
-<p class="p1"><span class="Apple-converted-space">      </span>window.location = deepLink;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;p&gt;Chargement de l’application… Si rien ne se passe, &lt;a id="link"&gt;cliquez ici&lt;/a&gt;.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>// Au cas où JavaScript serait désactivé</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("link").href =</p>
-<p class="p1"><span class="Apple-converted-space">      </span>"wedshoots://album?code=ES408879c9";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div class="message">
+    <h1>Ouverture de votre album WedShoots</h1>
+    <p>Si l’application est installée, elle va s’ouvrir automatiquement.<br>
+    Sinon, vous serez redirigé vers la boutique d’applications.</p>
+    <p><a id="manualLink" class="button" href="#">Ouvrir manuellement</a></p>
+  </div>
+
+  <script>
+    // Ton code d'accès
+    const accessCode = "ES408879c9";
+
+    // Deep link interne à l'app
+    const deepLinkURL = `wedshoots://album?code=${accessCode}`;
+
+    // Fallback Stores
+    const iosStoreURL     = "https://apps.apple.com/fr/app/wedshoots/id660256196";
+    const androidStoreURL = "https://play.google.com/store/apps/details?id=net.bodas.android.wedshoots&hl=fr";
+
+    // Intent Android
+    const androidIntent = 
+      `intent://album?code=${accessCode}` +
+      `#Intent;scheme=wedshoots;package=net.bodas.android.wedshoots;` +
+      `S.browser_fallback_url=${encodeURIComponent(androidStoreURL)};end`;
+
+    // Fonction de redirection principale
+    function redirect() {
+      const ua = navigator.userAgent || "";
+      if (/Android/i.test(ua)) {
+        // Android : lance l'intent
+        window.location = androidIntent;
+      } 
+      else if (/iPhone|iPad|iPod/i.test(ua)) {
+        // iOS : on tente le schéma custom
+        window.location = deepLinkURL;
+        // si l'app n'ouvre pas après 1,5s, on redirige vers l'App Store
+        setTimeout(() => window.location = iosStoreURL, 1500);
+      } 
+      else {
+        // Desktop et autres : on renvoie vers l'App Store iOS
+        window.location = iosStoreURL;
+      }
+    }
+
+    // Lancer la redirection automatique dès que possible
+    window.addEventListener("load", redirect);
+
+    // Lien manuel si JS est trop lent ou bloqué
+    document.getElementById("manualLink").href =
+      (/Android/i.test(navigator.userAgent))
+        ? androidIntent
+        : deepLinkURL;
+  </script>
 </body>
 </html>
