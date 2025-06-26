@@ -34,13 +34,19 @@
   </div>
 
   <script>
+    // Ton code d'accès
     const accessCode     = "ES408879c9";
-    const deepLinkPath   = `album/${accessCode}`;
-    const deepLinkURL    = `wedshoots://${deepLinkPath}`;
+
+    // Deep link simplifié : wedshoots://ES408879c9
+    const deepLinkURL    = `wedshoots://${accessCode}`;
+
+    // URL de secours sur l'App Store (iOS) et Play Store (Android)
     const iosStoreURL    = "https://apps.apple.com/fr/app/wedshoots/id660256196";
     const androidStoreURL= "https://play.google.com/store/apps/details?id=net.bodas.android.wedshoots&hl=fr";
+
+    // Intent Android avec fallback vers le Play Store
     const androidIntent  =
-      `intent://${deepLinkPath}` +
+      `intent://${accessCode}` +
       `#Intent;scheme=wedshoots;package=net.bodas.android.wedshoots;` +
       `S.browser_fallback_url=${encodeURIComponent(androidStoreURL)};end`;
 
@@ -48,28 +54,30 @@
       const ua = navigator.userAgent || "";
 
       if (/Android/i.test(ua)) {
-        // Android : use intent://
+        // Android : lance l'intent://
         window.location = androidIntent;
       }
       else if (/iPhone|iPad|iPod/i.test(ua)) {
-        // iOS : attempt via iframe
+        // iOS : via un iframe pour forcer le schéma
         const iframe = document.createElement('iframe');
         iframe.style.display = 'none';
         iframe.src = deepLinkURL;
         document.body.appendChild(iframe);
-        // fallback after 2s
-        setTimeout(() => window.location = iosStoreURL, 2000);
+        // si l'app n'ouvre pas au bout de 2s, on redirige vers l'App Store
+        setTimeout(() => {
+          window.location = iosStoreURL;
+        }, 2000);
       }
       else {
-        // Desktop / other
+        // Desktop / autre → envoi direct vers l'App Store iOS
         window.location = iosStoreURL;
       }
     }
 
-    // run on load
+    // Déclenchement auto au chargement
     window.addEventListener("load", tryOpenApp);
 
-    // manual link
+    // Lien manuel si JS ne fonctionne pas
     document.getElementById("manualLink").href =
       (/Android/i.test(navigator.userAgent)) ? androidIntent : deepLinkURL;
   </script>
