@@ -27,54 +27,49 @@
 </head>
 <body>
   <div>
-    <h1>Ouverture de votre album WedShoots</h1>
+    <h1>Chargement de l’album WedShoots…</h1>
     <p>Si l’application est installée, elle va s’ouvrir automatiquement.<br>
        Sinon, vous serez redirigé vers la boutique d’applications.</p>
     <p><a id="manualLink" class="button" href="#">Ouvrir manuellement</a></p>
   </div>
 
   <script>
-    // Ton code d'accès
     const accessCode     = "ES408879c9";
-
-    // Deep link (chemin plutôt que query pour WedShoots)
-    const deepLinkURL     = `wedshoots://album/${accessCode}`;
-
-    // URLs de secours
-    const iosStoreURL     = "https://apps.apple.com/fr/app/wedshoots/id660256196";
-    const androidStoreURL = "https://play.google.com/store/apps/details?id=net.bodas.android.wedshoots&hl=fr";
-
-    // Intent Android avec fallback vers le Play Store
-    const androidIntent =
-      `intent://album/${accessCode}` +
+    const deepLinkPath   = `album/${accessCode}`;
+    const deepLinkURL    = `wedshoots://${deepLinkPath}`;
+    const iosStoreURL    = "https://apps.apple.com/fr/app/wedshoots/id660256196";
+    const androidStoreURL= "https://play.google.com/store/apps/details?id=net.bodas.android.wedshoots&hl=fr";
+    const androidIntent  =
+      `intent://${deepLinkPath}` +
       `#Intent;scheme=wedshoots;package=net.bodas.android.wedshoots;` +
       `S.browser_fallback_url=${encodeURIComponent(androidStoreURL)};end`;
 
-    function redirect() {
+    function tryOpenApp() {
       const ua = navigator.userAgent || "";
 
       if (/Android/i.test(ua)) {
-        // Android : lance l'intent://
+        // Android : use intent://
         window.location = androidIntent;
       }
       else if (/iPhone|iPad|iPod/i.test(ua)) {
-        // iOS : lance le deep link
-        window.location = deepLinkURL;
-        // Si l'app n'ouvre pas au bout de 1,5s, on redirige sur l'App Store
-        setTimeout(() => {
-          window.location = iosStoreURL;
-        }, 1500);
+        // iOS : attempt via iframe
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = deepLinkURL;
+        document.body.appendChild(iframe);
+        // fallback after 2s
+        setTimeout(() => window.location = iosStoreURL, 2000);
       }
       else {
-        // Desktop / autres → envoi direct vers l'App Store
+        // Desktop / other
         window.location = iosStoreURL;
       }
     }
 
-    // Démarre la redirection automatique dès que la page est chargée
-    window.addEventListener("load", redirect);
+    // run on load
+    window.addEventListener("load", tryOpenApp);
 
-    // Met à jour le lien manuel en bas de page
+    // manual link
     document.getElementById("manualLink").href =
       (/Android/i.test(navigator.userAgent)) ? androidIntent : deepLinkURL;
   </script>
