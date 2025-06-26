@@ -5,17 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ouverture WedShoots</title>
   <style>
-    body { 
-      display: flex; 
-      align-items: center; 
+    body {
+      display: flex;
+      align-items: center;
       justify-content: center;
-      height: 100vh; 
-      font-family: sans-serif; 
-      text-align: center; 
+      height: 100vh;
+      font-family: sans-serif;
+      text-align: center;
       padding: 1rem;
-    }
-    .message {
-      max-width: 20rem;
     }
     .button {
       display: inline-block;
@@ -29,57 +26,57 @@
   </style>
 </head>
 <body>
-  <div class="message">
+  <div>
     <h1>Ouverture de votre album WedShoots</h1>
     <p>Si l’application est installée, elle va s’ouvrir automatiquement.<br>
-    Sinon, vous serez redirigé vers la boutique d’applications.</p>
+       Sinon, vous serez redirigé vers la boutique d’applications.</p>
     <p><a id="manualLink" class="button" href="#">Ouvrir manuellement</a></p>
   </div>
 
   <script>
     // Ton code d'accès
-    const accessCode = "ES408879c9";
+    const accessCode     = "ES408879c9";
 
-    // Deep link interne à l'app
-    const deepLinkURL = `wedshoots://album?code=${accessCode}`;
+    // Deep link (chemin plutôt que query pour WedShoots)
+    const deepLinkURL     = `wedshoots://album/${accessCode}`;
 
-    // Fallback Stores
+    // URLs de secours
     const iosStoreURL     = "https://apps.apple.com/fr/app/wedshoots/id660256196";
     const androidStoreURL = "https://play.google.com/store/apps/details?id=net.bodas.android.wedshoots&hl=fr";
 
-    // Intent Android
-    const androidIntent = 
-      `intent://album?code=${accessCode}` +
+    // Intent Android avec fallback vers le Play Store
+    const androidIntent =
+      `intent://album/${accessCode}` +
       `#Intent;scheme=wedshoots;package=net.bodas.android.wedshoots;` +
       `S.browser_fallback_url=${encodeURIComponent(androidStoreURL)};end`;
 
-    // Fonction de redirection principale
     function redirect() {
       const ua = navigator.userAgent || "";
+
       if (/Android/i.test(ua)) {
-        // Android : lance l'intent
+        // Android : lance l'intent://
         window.location = androidIntent;
-      } 
+      }
       else if (/iPhone|iPad|iPod/i.test(ua)) {
-        // iOS : on tente le schéma custom
+        // iOS : lance le deep link
         window.location = deepLinkURL;
-        // si l'app n'ouvre pas après 1,5s, on redirige vers l'App Store
-        setTimeout(() => window.location = iosStoreURL, 1500);
-      } 
+        // Si l'app n'ouvre pas au bout de 1,5s, on redirige sur l'App Store
+        setTimeout(() => {
+          window.location = iosStoreURL;
+        }, 1500);
+      }
       else {
-        // Desktop et autres : on renvoie vers l'App Store iOS
+        // Desktop / autres → envoi direct vers l'App Store
         window.location = iosStoreURL;
       }
     }
 
-    // Lancer la redirection automatique dès que possible
+    // Démarre la redirection automatique dès que la page est chargée
     window.addEventListener("load", redirect);
 
-    // Lien manuel si JS est trop lent ou bloqué
+    // Met à jour le lien manuel en bas de page
     document.getElementById("manualLink").href =
-      (/Android/i.test(navigator.userAgent))
-        ? androidIntent
-        : deepLinkURL;
+      (/Android/i.test(navigator.userAgent)) ? androidIntent : deepLinkURL;
   </script>
 </body>
 </html>
