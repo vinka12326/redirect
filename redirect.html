@@ -34,17 +34,10 @@
   </div>
 
   <script>
-    // Ton code d'accès
     const accessCode     = "ES408879c9";
-
-    // Deep link simplifié : wedshoots://ES408879c9
     const deepLinkURL    = `wedshoots://${accessCode}`;
-
-    // URL de secours sur l'App Store (iOS) et Play Store (Android)
     const iosStoreURL    = "https://apps.apple.com/fr/app/wedshoots/id660256196";
     const androidStoreURL= "https://play.google.com/store/apps/details?id=net.bodas.android.wedshoots&hl=fr";
-
-    // Intent Android avec fallback vers le Play Store
     const androidIntent  =
       `intent://${accessCode}` +
       `#Intent;scheme=wedshoots;package=net.bodas.android.wedshoots;` +
@@ -54,30 +47,26 @@
       const ua = navigator.userAgent || "";
 
       if (/Android/i.test(ua)) {
-        // Android : lance l'intent://
+        // Android : lance intent://
         window.location = androidIntent;
       }
       else if (/iPhone|iPad|iPod/i.test(ua)) {
-        // iOS : via un iframe pour forcer le schéma
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = deepLinkURL;
-        document.body.appendChild(iframe);
-        // si l'app n'ouvre pas au bout de 2s, on redirige vers l'App Store
+        // iOS : on lance directement le lien custom
+        window.location = deepLinkURL;
+        // on attend 3 secondes avant de tomber sur l'App Store
         setTimeout(() => {
           window.location = iosStoreURL;
-        }, 2000);
+        }, 3000);
       }
       else {
-        // Desktop / autre → envoi direct vers l'App Store iOS
+        // Desktop / autre
         window.location = iosStoreURL;
       }
     }
 
-    // Déclenchement auto au chargement
     window.addEventListener("load", tryOpenApp);
 
-    // Lien manuel si JS ne fonctionne pas
+    // lien manuel
     document.getElementById("manualLink").href =
       (/Android/i.test(navigator.userAgent)) ? androidIntent : deepLinkURL;
   </script>
